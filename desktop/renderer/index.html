@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'" />
+  <title>CloudSync</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">☁ CloudSync</div>
+    <div id="conn" class="pill offline">Offline</div>
+  </header>
+
+  <main>
+    <section class="stats">
+      <div class="stat"><span id="s-uploaded">0</span><label>Uploaded</label></div>
+      <div class="stat"><span id="s-active">0</span><label>In progress</label></div>
+      <div class="stat"><span id="s-queued">0</span><label>Waiting</label></div>
+      <div class="stat"><span id="s-skipped">0</span><label>Duplicates skipped</label></div>
+      <div class="stat danger"><span id="s-failed">0</span><label>Failed</label></div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Synced folders</h2>
+        <form id="add-form" class="row">
+          <input id="folder-path" placeholder="Paste a folder path, e.g. D:\Scans" spellcheck="false" />
+          <button type="button" id="browse" class="secondary">Browse…</button>
+          <button type="submit">Add</button>
+        </form>
+        <p id="folder-error" class="error" hidden></p>
+        <ul id="folders" class="list"></ul>
+        <p id="no-folders" class="muted">No folders yet. Add one and every file put inside it will be uploaded to S3.</p>
+      </section>
+
+      <section class="card">
+        <h2>Settings</h2>
+        <form id="settings">
+          <label>Server URL <input name="serverUrl" placeholder="http://localhost:4000" spellcheck="false" /></label>
+          <label>API key <input name="apiKey" type="password" spellcheck="false" /></label>
+          <label>Device name <input name="deviceName" /></label>
+          <label>Parallel uploads <input name="concurrency" type="number" min="1" max="8" /></label>
+          <label class="check"><input name="deleteAfterUpload" type="checkbox" /> Delete local file after upload</label>
+          <label class="check"><input name="startOnLogin" type="checkbox" /> Start CloudSync when Windows starts</label>
+          <div class="row">
+            <button type="submit">Save</button>
+            <button type="button" id="test" class="secondary">Test connection</button>
+          </div>
+          <p id="settings-msg" class="muted"></p>
+        </form>
+      </section>
+    </div>
+
+    <section class="card">
+      <div class="row space">
+        <h2>Transfers</h2>
+        <button id="retry" class="secondary small" hidden>Retry failed</button>
+      </div>
+      <ul id="jobs" class="list"></ul>
+      <p id="no-jobs" class="muted">Nothing to upload. Drop files into a synced folder.</p>
+    </section>
+
+    <section class="card">
+      <h2>Activity</h2>
+      <ul id="logs" class="logs"></ul>
+    </section>
+  </main>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
